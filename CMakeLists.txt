@@ -20,19 +20,19 @@ file(GLOB SRCS "src/*.h" "src/*.cpp")
 
 # Find the library
 find_package(PkgConfig REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Concurrent REQUIRED)
-find_package(Dtk REQUIRED Widget)
+find_package(Qt5 REQUIRED COMPONENTS Widgets Concurrent X11Extras)
+find_package(Dtk REQUIRED COMPONENTS Widget)
 
-pkg_check_modules(ProcPS REQUIRED libprocps)
+pkg_check_modules(XLIBS REQUIRED x11)
 
 # driver-manager
 add_executable(${BIN_NAME} ${SRCS})
-target_include_directories(${BIN_NAME} PUBLIC ${ProcPS_INCLUDE_DIRS})
+target_include_directories(${BIN_NAME} PUBLIC ${XLIBS_INCLUDE_DIRS} ${Qt5X11Extras_INCLUDE_DIRS})
 target_link_libraries(${BIN_NAME} PRIVATE
     ${DtkWidget_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5Concurrent_LIBRARIES}
-    ${ProcPS_LIBRARIES}
+    ${Qt5X11Extras_LIBRARIES}
+    ${XLIBS_LIBRARIES}
 )
 

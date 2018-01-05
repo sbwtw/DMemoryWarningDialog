@@ -4,7 +4,10 @@
 #include <QObject>
 #include <QList>
 
-#include <proc/readproc.h>
+class ProcessInfo
+{
+
+};
 
 class ProcessInfoModel;
 class ProcessInfoManager : public QObject
@@ -23,7 +26,10 @@ private slots:
     void scanProcessInfos();
 
 private:
-    QList<proc_t> processInfoList;
+    void appendProcess(const int pid);
+
+private:
+    QList<ProcessInfo> processInfoList;
 };
 
 #endif // PROCESSINFOMANAGER_H
