@@ -6,7 +6,9 @@
 
 class ProcessInfo
 {
-
+public:
+    unsigned totalMemBytes;
+    QString path;
 };
 
 class ProcessInfoModel;
@@ -27,6 +29,7 @@ private slots:
 
 private:
     void appendProcess(const int pid);
+    void appendCGroupPath(const QString &path);
 
 private:
     QList<ProcessInfo> processInfoList;

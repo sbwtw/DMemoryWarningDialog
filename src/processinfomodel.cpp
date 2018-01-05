@@ -1,10 +1,17 @@
 #include "processinfomodel.h"
 
+#include <QDebug>
+
 #define COLUMN_ICON     0
 #define COLUMN_NAME     1
 #define COLUMN_MEM      2
 #define COLUMN_FREE_BTN 3
 #define COLUMN_NUMS     4
+
+inline QString formatMem(const unsigned mem_bytes)
+{
+    return QString("%1M").arg(mem_bytes / 8 / 1024 / 1024);
+}
 
 ProcessInfoModel::ProcessInfoModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -37,6 +44,8 @@ QVariant ProcessInfoModel::data(const QModelIndex &index, int role) const
         {
         case COLUMN_FREE_BTN:
             return QString(tr("Free"));
+        case COLUMN_MEM:
+            return formatMem(m_processInfos->processInfoList[index.row()].totalMemBytes);
         default:
             return QString("%1, %2").arg(index.row()).arg(index.column());
         }

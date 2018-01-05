@@ -73,6 +73,24 @@ void ProcessInfoManager::appendProcess(const int pid)
         const auto &items = info.split(':');
         if (items.size() != 3 || items[1] != "memory" || !items[2].contains("uiapps"))
             continue;
-        qDebug() << items[2];
+
+        return appendCGroupPath(items[2]);
     }
+}
+
+void ProcessInfoManager::appendCGroupPath(const QString &path)
+{
+    const QString basePath = "/sys/fs/cgroup/memory" + path;
+
+    QFile mem_usage(basePath + "/memory.usage_in_bytes");
+    if (!mem_usage.open(QIODevice::ReadOnly))
+        return;
+
+    const QString &mem_num = mem_usage.readAll();
+
+    ProcessInfo pInfo;
+    pInfo.totalMemBytes = mem_num.trimmed().toUInt();
+    pInfo.path = basePath;
+
+    processInfoList << pInfo;
 }
