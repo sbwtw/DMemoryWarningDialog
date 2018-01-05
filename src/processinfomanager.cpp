@@ -105,19 +105,23 @@ void ProcessInfoManager::appendCGroupPath(const QString &path)
         return;
     const QString &mem_num = mem_usage.readAll();
 
-    QFile mainProc(basePath + "/cgroup.procs");
-    if (!mainProc.open(QIODevice::ReadOnly))
+    QFile procs(basePath + "/cgroup.procs");
+    if (!procs.open(QIODevice::ReadOnly))
         return;
-    const QString &mainProcId = mainProc.readAll().split('\n').first();
+    const auto &pidList = procs.readAll().split('\n');
+    const QString &mainProcId = pidList.first();
 
     QFile procCmdline("/proc/" + mainProcId + "/cmdline");
     if (!procCmdline.open(QIODevice::ReadOnly))
         return;
 
     ProcessInfo pInfo;
-    pInfo.totalMemBytes = mem_num.trimmed().toUInt();
+    pInfo.total_mem_bytes = mem_num.trimmed().toUInt();
     pInfo.cgroup_path = basePath;
     pInfo.app_name = procCmdline.readAll().split('/').last();
+    for (const auto &id : pidList)
+        if (!id.isEmpty())
+            pInfo.pid_list << id;
 
     processInfoList << std::move(pInfo);
 }

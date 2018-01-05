@@ -9,9 +9,10 @@
 class ProcessInfo
 {
 public:
-    unsigned totalMemBytes;
+    unsigned total_mem_bytes;
     QString cgroup_path;
     QString app_name;
+    QStringList pid_list;
 };
 
 class ProcessInfoModel;

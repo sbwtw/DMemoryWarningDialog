@@ -46,7 +46,7 @@ QVariant ProcessInfoModel::data(const QModelIndex &index, int role) const
         case COLUMN_FREE_BTN:
             return QString(tr("Free"));
         case COLUMN_MEM:
-            return formatMem(m_processInfos->processInfoList[index.row()].totalMemBytes);
+            return formatMem(m_processInfos->processInfoList[index.row()].total_mem_bytes);
         case COLUMN_NAME:
             return m_processInfos->processInfoList[index.row()].app_name;
         default:;
@@ -58,6 +58,8 @@ QVariant ProcessInfoModel::data(const QModelIndex &index, int role) const
         break;
     case StateRole:
         return m_buttonPressedState.value(index.row(), false);
+    case PidListRole:
+        return m_processInfos->processInfoList[index.row()].pid_list;
     default:;
     }
 

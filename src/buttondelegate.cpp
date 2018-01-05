@@ -2,6 +2,14 @@
 #include "processinfomodel.h"
 
 #include <QApplication>
+#include <QProcess>
+#include <QDebug>
+
+void terminate(const QStringList &pidList)
+{
+    for (const auto &pid : pidList)
+        QProcess::startDetached("kill", QStringList() << pid);
+}
 
 ButtonDelegate::ButtonDelegate(QObject *parent)
     : QItemDelegate(parent)
@@ -32,6 +40,7 @@ bool ButtonDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const
         break;
     case QEvent::MouseButtonRelease:
         model->setData(index, false ,ProcessInfoModel::StateRole);
+        terminate(index.data(ProcessInfoModel::PidListRole).toStringList());
         break;
     default:;
     }
