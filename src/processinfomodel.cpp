@@ -1,6 +1,7 @@
 #include "processinfomodel.h"
 
 #include <QDebug>
+#include <QIcon>
 
 #define COLUMN_ICON     0
 #define COLUMN_NAME     1
@@ -10,7 +11,7 @@
 
 inline QString formatMem(const unsigned mem_bytes)
 {
-    return QString("%1M").arg(mem_bytes / 8 / 1024 / 1024);
+    return QString("%1M").arg(mem_bytes / 1024 / 1024);
 }
 
 ProcessInfoModel::ProcessInfoModel(QObject *parent)
@@ -46,9 +47,14 @@ QVariant ProcessInfoModel::data(const QModelIndex &index, int role) const
             return QString(tr("Free"));
         case COLUMN_MEM:
             return formatMem(m_processInfos->processInfoList[index.row()].totalMemBytes);
-        default:
-            return QString("%1, %2").arg(index.row()).arg(index.column());
+        case COLUMN_NAME:
+            return m_processInfos->processInfoList[index.row()].app_name;
+        default:;
         }
+        break;
+    case Qt::DecorationRole:
+        if (index.column() == COLUMN_ICON)
+            return QIcon::fromTheme(m_processInfos->processInfoList[index.row()].app_name).pixmap(32, 32);
         break;
     case StateRole:
         return m_buttonPressedState.value(index.row(), false);

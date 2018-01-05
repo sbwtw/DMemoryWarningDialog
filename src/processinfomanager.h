@@ -8,7 +8,8 @@ class ProcessInfo
 {
 public:
     unsigned totalMemBytes;
-    QString path;
+    QString cgroup_path;
+    QString app_name;
 };
 
 class ProcessInfoModel;
