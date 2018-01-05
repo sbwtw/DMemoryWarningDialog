@@ -9,4 +9,5 @@ ProcessInfoTable::ProcessInfoTable(QWidget *parent)
     horizontalHeader()->setVisible(false);
     verticalHeader()->setVisible(false);
     setFrameStyle(QFrame::NoFrame);
+    setSelectionMode(NoSelection);
 }

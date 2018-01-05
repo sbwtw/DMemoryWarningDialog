@@ -11,12 +11,22 @@
 
 ProcessInfoManager::ProcessInfoManager(QObject *parent)
     : QObject(parent)
+
+    , m_refreshTimer(new QTimer(this))
 {
+    m_refreshTimer->setSingleShot(false);
+    m_refreshTimer->setInterval(1000);
+    m_refreshTimer->start();
+
+    connect(m_refreshTimer, &QTimer::timeout, this, &ProcessInfoManager::scanProcessInfos);
+
     QTimer::singleShot(1, this, &ProcessInfoManager::scanProcessInfos);
 }
 
 void ProcessInfoManager::scanProcessInfos()
 {
+    processInfoList.clear();
+
     auto *display = QX11Info::display();
     const Atom clients_atom = XInternAtom(display, "_NET_CLIENT_LIST", true);
     const Atom pid_atom = XInternAtom(display, "_NET_WM_PID", true);

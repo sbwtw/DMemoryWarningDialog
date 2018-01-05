@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QList>
+#include <QTimer>
+#include <QPointer>
 
 class ProcessInfo
 {
@@ -34,6 +36,7 @@ private:
 
 private:
     QList<ProcessInfo> processInfoList;
+    QPointer<QTimer> m_refreshTimer;
 };
 
 #endif // PROCESSINFOMANAGER_H

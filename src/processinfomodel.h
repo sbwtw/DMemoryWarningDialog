@@ -15,6 +15,7 @@ public:
 
     enum ProcessInfoRole
     {
+        IconRole = Qt::DecorationRole,
         DisplayRole = Qt::DisplayRole,
 
         StateRole = Qt::UserRole,

@@ -9,6 +9,8 @@ class ProcessInfoTable : public QTableView
 
 public:
     explicit ProcessInfoTable(QWidget *parent = nullptr);
+
+private:
 };
 
 #endif // PROCESSINFOTABLE_H

@@ -52,9 +52,9 @@ QVariant ProcessInfoModel::data(const QModelIndex &index, int role) const
         default:;
         }
         break;
-    case Qt::DecorationRole:
+    case IconRole:
         if (index.column() == COLUMN_ICON)
-            return QIcon::fromTheme(m_processInfos->processInfoList[index.row()].app_name).pixmap(32, 32);
+            return QIcon::fromTheme(m_processInfos->processInfoList[index.row()].app_name).pixmap(24, 24);
         break;
     case StateRole:
         return m_buttonPressedState.value(index.row(), false);
