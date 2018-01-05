@@ -24,12 +24,15 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
 find_package(Dtk REQUIRED Widget)
 
+pkg_check_modules(ProcPS REQUIRED libprocps)
+
 # driver-manager
 add_executable(${BIN_NAME} ${SRCS})
-target_include_directories(${BIN_NAME} PUBLIC)
+target_include_directories(${BIN_NAME} PUBLIC ${ProcPS_INCLUDE_DIRS})
 target_link_libraries(${BIN_NAME} PRIVATE
     ${DtkWidget_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5Concurrent_LIBRARIES}
+    ${ProcPS_LIBRARIES}
 )
 

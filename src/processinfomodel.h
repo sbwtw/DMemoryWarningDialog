@@ -1,7 +1,10 @@
 #ifndef PROCESSINFOMODEL_H
 #define PROCESSINFOMODEL_H
 
+#include "processinfomanager.h"
+
 #include <QAbstractTableModel>
+#include <QPointer>
 
 class ProcessInfoModel : public QAbstractTableModel
 {
@@ -23,6 +26,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
 
 private:
+    QPointer<ProcessInfoManager> m_processInfos;
     QMap<int, bool> m_buttonPressedState;
 };
 

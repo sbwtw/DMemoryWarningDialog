@@ -8,14 +8,17 @@
 
 ProcessInfoModel::ProcessInfoModel(QObject *parent)
     : QAbstractTableModel(parent)
+
+    , m_processInfos(new ProcessInfoManager)
 {
+    connect(m_processInfos, &ProcessInfoManager::processInfoListChanged, this, [=] { emit layoutChanged(); });
 }
 
 int ProcessInfoModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
 
-    return 10;
+    return m_processInfos->processInfoList.size();
 }
 
 int ProcessInfoModel::columnCount(const QModelIndex &parent) const
