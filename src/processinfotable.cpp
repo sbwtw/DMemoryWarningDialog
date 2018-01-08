@@ -28,3 +28,10 @@ void ProcessInfoTable::setModel(QAbstractItemModel *model)
 
     setColumnWidth(0, 24 + 10);
 }
+
+void ProcessInfoTable::mouseReleaseEvent(QMouseEvent *e)
+{
+    QTableView::mouseReleaseEvent(e);
+
+    static_cast<ProcessInfoModel *>(model())->clearPressed();
+}

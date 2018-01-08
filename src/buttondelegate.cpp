@@ -20,7 +20,7 @@ ButtonDelegate::ButtonDelegate(QObject *parent)
 void ButtonDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionButton button;
-    button.rect = option.rect.marginsRemoved(QMargins(3, 2, 3, 2));
+    button.rect = option.rect.marginsRemoved(QMargins(6, 6, 6, 6));
     button.text = index.data().toString();
     button.state = QStyle::State_Enabled;
     if (index.data(ProcessInfoModel::StateRole).toBool())
@@ -36,11 +36,10 @@ bool ButtonDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const
     switch (event->type())
     {
     case QEvent::MouseButtonPress:
-        model->setData(index, true, ProcessInfoModel::StateRole);
+        model->setData(index, QVariant(), ProcessInfoModel::StateRole);
         break;
     case QEvent::MouseButtonRelease:
-        model->setData(index, false ,ProcessInfoModel::StateRole);
-        terminate(index.data(ProcessInfoModel::PidListRole).toStringList());
+        terminate(index.data(ProcessInfoModel::PidListRole).value<QStringList>());
         break;
     default:;
     }

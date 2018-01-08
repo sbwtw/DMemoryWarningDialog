@@ -33,9 +33,12 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     QVariant data(const QModelIndex &index, int role) const;
 
+public slots:
+    void clearPressed();
+
 private:
     QPointer<ProcessInfoManager> m_processInfos;
-    QMap<int, bool> m_buttonPressedState;
+    QModelIndex m_pressedIndex;
 };
 
 #endif // PROCESSINFOMODEL_H

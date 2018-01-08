@@ -51,7 +51,7 @@ QVariant ProcessInfoModel::data(const QModelIndex &index, int role) const
             return QIcon::fromTheme(m_processInfos->processInfoList[index.row()].app_name, QIcon::fromTheme("application-x-desktop")).pixmap(24, 24);
         break;
     case StateRole:
-        return m_buttonPressedState.value(index.row(), false);
+        return m_pressedIndex == index;
     case PidListRole:
         return m_processInfos->processInfoList[index.row()].pid_list;
     default:;
@@ -60,12 +60,20 @@ QVariant ProcessInfoModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+void ProcessInfoModel::clearPressed()
+{
+    const QModelIndex idx = m_pressedIndex;
+    m_pressedIndex = QModelIndex();
+
+    emit dataChanged(idx, idx);
+}
+
 bool ProcessInfoModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     Q_UNUSED(role)
+    Q_UNUSED(value)
 
-    if (index.column() == COLUMN_FREE_BTN)
-        m_buttonPressedState[index.row()] = value.toBool();
+    m_pressedIndex = index;
 
     return true;
 }
