@@ -6,6 +6,12 @@
 #include <QAbstractTableModel>
 #include <QPointer>
 
+#define COLUMN_ICON     0
+#define COLUMN_NAME     1
+#define COLUMN_MEM      2
+#define COLUMN_FREE_BTN 3
+#define COLUMN_NUMS     4
+
 class ProcessInfoModel : public QAbstractTableModel
 {
     Q_OBJECT

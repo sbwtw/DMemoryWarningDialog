@@ -10,7 +10,7 @@ class ProcessInfoTable : public QTableView
 public:
     explicit ProcessInfoTable(QWidget *parent = nullptr);
 
-private:
+    void setModel(QAbstractItemModel *model);
 };
 
 #endif // PROCESSINFOTABLE_H

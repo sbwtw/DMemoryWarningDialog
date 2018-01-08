@@ -3,12 +3,6 @@
 #include <QDebug>
 #include <QIcon>
 
-#define COLUMN_ICON     0
-#define COLUMN_NAME     1
-#define COLUMN_MEM      2
-#define COLUMN_FREE_BTN 3
-#define COLUMN_NUMS     4
-
 inline QString formatMem(const unsigned mem_bytes)
 {
     return QString("%1M").arg(mem_bytes / 1024 / 1024);
