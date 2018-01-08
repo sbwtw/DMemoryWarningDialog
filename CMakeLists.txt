@@ -20,7 +20,7 @@ file(GLOB SRCS "src/*.h" "src/*.cpp")
 
 # Find the library
 find_package(PkgConfig REQUIRED)
-find_package(Qt5 REQUIRED COMPONENTS Widgets Concurrent X11Extras)
+find_package(Qt5 REQUIRED COMPONENTS Widgets Concurrent X11Extras DBus)
 find_package(Dtk REQUIRED COMPONENTS Widget)
 
 pkg_check_modules(XLIBS REQUIRED x11)
@@ -32,6 +32,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${DtkWidget_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5Concurrent_LIBRARIES}
+    ${Qt5DBus_LIBRARIES}
     ${Qt5X11Extras_LIBRARIES}
     ${XLIBS_LIBRARIES}
 )

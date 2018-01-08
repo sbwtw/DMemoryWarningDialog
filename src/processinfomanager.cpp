@@ -5,9 +5,14 @@
 #include <QX11Info>
 #include <QWindow>
 #include <QFile>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDBusMetaType>
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+
+typedef QMap<quint32, QString> AppsMap;
 
 ProcessInfoManager::ProcessInfoManager(QObject *parent)
     : QObject(parent)
@@ -20,13 +25,23 @@ ProcessInfoManager::ProcessInfoManager(QObject *parent)
 
     connect(m_refreshTimer, &QTimer::timeout, this, &ProcessInfoManager::scanProcessInfos);
 
+    qRegisterMetaType<AppsMap>("AppsMap");
+    qDBusRegisterMetaType<AppsMap>();
+
     QTimer::singleShot(1, this, &ProcessInfoManager::scanProcessInfos);
 }
 
 void ProcessInfoManager::scanProcessInfos()
 {
-    processInfoList.clear();
+    // using dbus to find windows
+    QDBusInterface appsInter("com.deepin.SessionManager", "/com/deepin/StartManager",  "com.deepin.StartManager");
+    AppsMap reply = QDBusReply<AppsMap>(appsInter.call("GetApps")).value();
 
+    processInfoList.clear();
+    for (auto it(reply.cbegin()); it != reply.cend(); ++it)
+        appendCGroupPath(QString("/2@dde/uiapps/%1").arg(it.key()));
+
+#if false // using x11 to find windows
     auto *display = QX11Info::display();
     const Atom clients_atom = XInternAtom(display, "_NET_CLIENT_LIST", true);
     const Atom pid_atom = XInternAtom(display, "_NET_WM_PID", true);
@@ -67,6 +82,7 @@ void ProcessInfoManager::scanProcessInfos()
 
         XFree(prop_to_return);
     } while (n_items_return == items_per_loop);
+#endif
 
     emit processInfoListChanged();
 }
